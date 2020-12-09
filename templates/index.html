@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>openclocking</title>
+</head>
+<body>
+  <h2>Welcome to openclocking!</h2>
+  <h3>Currently seeing {{ date }}</h3>
+  <ul id="navigation">
+    {% for value in values %}
+    <li>{{ value }}</a></li>
+    {% endfor %}
+  </ul>
+  <form action="/client/api/{{ date }}" method="POST">
+    <div class="form-group">
+      <input type="text" class="form-control" id="time" name="time" placeholder="hh:mm" pattern="[0-2][0-9]:[0-5][0-9]" required="true">
+    </div>
+    <button type="submit" class="btn btn-primary">Clock!</button>
+  </form>
+</body>
