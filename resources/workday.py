@@ -5,23 +5,20 @@ from flask import (
     request,
     url_for
 )
-
-workdays = {}
-
-def _create_if_not_exist(date):
-    if date not in workdays.keys():
-        workdays[date] = []
-    pass
+from model.sqlite import (
+    query_db,
+    insert_db
+)
 
 def workday(date):
-    _create_if_not_exist(date)
-    values = workdays[request.path.split("/")[-1]]
+    values = [i["time"] for i in query_db("SELECT time FROM dates WHERE date=?", (date,))]
     if "api" in request.path:
         if request.method == "GET":
-            return jsonify(workdays[date])
+            return jsonify(values)
         elif request.method == "POST":
-            workdays[date].append(request.form["time"])
+            time = request.form["time"]
+            insert_db("INSERT INTO dates (date, time) VALUES (?, ?)", (date, time))
             if "client" in request.path:
                 return redirect(url_for("workday", date=date))
-            return jsonify({date: workdays[date]})
+            return jsonify({date: [i["time"] for i in query_db("SELECT time FROM dates WHERE date=?", (date,))] })
     return render_template("index.html", date=date, values=values)
