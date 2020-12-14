@@ -2,16 +2,35 @@
 <html lang="en">
 <head>
   <title>openclocking</title>
+  <script>
+    function ShowHiddenText(id) {
+      document.getElementById("hiddenButtonEdit".concat(id)).style.display = "none";
+      document.getElementById("hiddenInput".concat(id)).style.display = "block";
+      document.getElementById("hiddenButtonSend".concat(id)).style.display = "block";
+    }
+  </script>
 </head>
 <body>
   <h2>Welcome to openclocking!</h2>
-  <h3>Currently seeing {{ date }}</h3>
+  <h3>Currently seeing {{ request.path.replace("/", "") }}</h3>
   <ul id="navigation">
     {% for value in values %}
-    <li>{{ value }}</a></li>
+    <li>
+      {{ value["time"] }}
+      <form action="/client/api/delete/{{ request.path.replace("/", "") }}" method="POST">
+        <input type="hidden" id="id" name="id" value={{ value["id"]}}>
+        <button>🗑️</button>
+      </form>
+      <form action="/client/api/put/{{ request.path.replace("/", "") }}" method="POST">
+        <input type="hidden" id=hiddenInputId{{value["id"]}} name="id" value={{value["id"]}}>
+        <input type="text" id=hiddenInput{{value["id"]}} name="time" style="display: none;">
+        <button id=hiddenButtonSend{{value["id"]}} style="display: none;">send</button>
+      </form>
+      <button id=hiddenButtonEdit{{value["id"]}} onclick="ShowHiddenText({{ value["id"] }});">✏️</button>
+    </li>
     {% endfor %}
   </ul>
-  <form action="/client/api/{{ date }}" method="POST">
+  <form action="/client/api/{{ request.path.replace("/", "") }}" method="POST">
     <div class="form-group">
       <input type="text" class="form-control" id="time" name="time" placeholder="hh:mm" pattern="[0-2][0-9]:[0-5][0-9]" required="true">
     </div>

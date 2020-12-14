@@ -8,8 +8,10 @@ app.add_url_rule("/", view_func=index, methods=["GET"])
 app.add_url_rule(rule="/<date>", view_func=workday, methods=["GET", "POST", "PUT", "DELETE"])
 app.add_url_rule(rule="/api/<date>", view_func=workday, methods=["GET", "POST", "PUT", "DELETE"])
 app.add_url_rule(rule="/client/api/<date>", view_func=workday, methods=["GET", "POST", "PUT", "DELETE"])
+app.add_url_rule(rule="/client/api/delete/<date>", view_func=workday, methods=["POST"])
+app.add_url_rule(rule="/client/api/put/<date>", view_func=workday, methods=["POST"])
 
 init_db()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
