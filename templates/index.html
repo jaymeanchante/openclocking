@@ -18,15 +18,15 @@
     <li>
       {{ value["time"] }}
       <form action="/client/api/delete/{{ request.path.replace("/", "") }}" method="POST">
-        <input type="hidden" id="id" name="id" value={{ value["id"]}}>
+        <input type="hidden" id="id" name="id" value={{ value["id"] }}>
         <button>🗑️</button>
       </form>
       <form action="/client/api/put/{{ request.path.replace("/", "") }}" method="POST">
-        <input type="hidden" id=hiddenInputId{{value["id"]}} name="id" value={{value["id"]}}>
-        <input type="text" id=hiddenInput{{value["id"]}} name="time" style="display: none;">
-        <button id=hiddenButtonSend{{value["id"]}} style="display: none;">send</button>
+        <input type="hidden" id=hiddenInputId{{ value["id"] }} name="id" value={{value["id"]}}>
+        <input type="text" id=hiddenInput{{ value["id"] }} name="time" style="display: none;">
+        <button id=hiddenButtonSend{{ value["id"] }} style="display: none;">send</button>
       </form>
-      <button id=hiddenButtonEdit{{value["id"]}} onclick="ShowHiddenText({{ value["id"] }});">✏️</button>
+      <button id=hiddenButtonEdit{{ value["id"] }} onclick="ShowHiddenText({{ value["id"] }});">✏️</button>
     </li>
     {% endfor %}
   </ul>
