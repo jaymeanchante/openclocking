@@ -18,7 +18,9 @@
       <h2>Welcome to openclocking!</h2>
     </div>
     <div class="row">
-      <h3>Currently seeing {{ request.path.replace("/", "") }}</h3>
+      <a href="/{{request.path.replace("/", "") | shiftdays(-1)}}" style="font-size: 2em"><</a>
+      <h3>{{ request.path.replace("/", "") }}</h3>
+      <a href="/{{request.path.replace("/", "") | shiftdays(1)}}" style="font-size: 2em">></a>
     </div>
     <ul>
       {% for value in values %}
