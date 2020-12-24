@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>openclocking</title>
+  <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    setTimeout(function(){
+      window.location.href = "/";
+    }, 5000);
+    var timeleft = 5;
+    setInterval(function(){
+      timeleft--;
+      document.getElementById("timer").textContent = timeleft;
+    }, 1000);
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h3>The data import was {{ success }}</h3>
+    </div>
+    {% for key, value in values.items() %}
+      <div class="row">
+        <p>{{key}} {{value}}</p>
+      </div>
+    {% endfor %}
+    <div class="row">
+      <p>You will be redirected to the homepage in <p id="timer">5</p></p>
+    </div>
+  </div>
+</body>

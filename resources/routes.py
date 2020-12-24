@@ -104,3 +104,27 @@ def client_workday(date):
         time = request.form["time"]
         insert_db("INSERT INTO dates (date, idx, time) VALUES (?, ?, ?)", (date, idx, time))
         return redirect(url_for("workday", date=date))
+
+def import_data():
+    if request.method == "GET":
+        return render_template("import.html")
+    elif request.method == "POST":
+        file = request.files["file"]
+        lines = file.stream.readlines()
+        success = "unsuccessful"
+        values = {}
+        try:
+          for i in range(len(lines)):
+              if "###PREFERENCES_END" in lines[i].decode():
+                  break
+          for line in lines[i+1:]:
+              line_split = line.decode().split()
+              date = line_split[0]
+              time = line_split[1].split(";")[0]
+              insert_db("INSERT INTO dates (date, idx, time) VALUES (?, ?, ?)", (date, 0, time))
+          values["Imported"] = f"{len(lines[i+1:])} entries"
+          values["Last entry"] = f"was date {date} at time {time}"
+          success = "successful"
+        except:
+          pass
+        return render_template("transition_after_import.html", success=success, values=values)

@@ -5,7 +5,8 @@ from resources.routes import (
     index,
     workday,
     api_workday,
-    client_workday
+    client_workday,
+    import_data
     )
 from utils.utils import _shiftdays
 
@@ -17,6 +18,7 @@ app.add_url_rule(rule="/api/<date>", view_func=api_workday, methods=["GET", "POS
 app.add_url_rule(rule="/client/api/<date>", view_func=client_workday, methods=["GET", "POST"])
 app.add_url_rule(rule="/client/api/delete/<date>", view_func=client_workday, methods=["POST"])
 app.add_url_rule(rule="/client/api/put/<date>", view_func=client_workday, methods=["POST"])
+app.add_url_rule(rule="/import", view_func=import_data, methods=["GET", "POST"])
 
 app.add_template_filter(_shiftdays, "shiftdays")
 
