@@ -28,14 +28,14 @@
         <div class="row">
           <p>{{ value["time"] }}</p>
           <form action="/client/api/delete/{{ request.path.replace("/", "") }}" method="POST" style="background-color: #f8f8f8;border: #f8f8f8; margin:0px; padding:0px">
-            <input type="hidden" id="id" name="id" value={{ value["id"] }}>
+            <input type="hidden" id="time" name="time" value={{ value["time"] }}>
             <button style="background-color: #f8f8f8; margin:0px; padding:5px">🗑️</button>
           </form>
           <form action="/client/api/put/{{ request.path.replace("/", "") }}" method="POST" style="background-color: #f8f8f8;border: #f8f8f8; margin:0px; padding:0px">
-            <button id=hiddenButtonEdit{{ value["id"] }} onclick="ShowHiddenText({{ value["id"] }});" style="background-color: #f8f8f8;  margin:0px; padding:5px">✏️</button>
-            <input type="hidden" id=hiddenInputId{{ value["id"] }} name="id" value={{value["id"]}}>
-            <input type="text" id=hiddenInput{{ value["id"] }} name="time" style="display: none;" placeholder="hh:mm" pattern="[0-2][0-9]:[0-5][0-9]" required="true">
-            <button id=hiddenButtonSend{{ value["id"] }} style="display: none;">send</button>
+            <button id="hiddenButtonEdit{{ value["time"] }}" onclick="ShowHiddenText('{{ value["time"] }}');" style="background-color: #f8f8f8;  margin:0px; padding:5px">✏️</button>
+            <input type="hidden" id="hiddenInputId{{ value["time"] }}" name="old_time" value={{value["time"]}}>
+            <input type="text" id="hiddenInput{{ value["time"] }}" name="new_time" style="display: none;" placeholder="hh:mm" pattern="[0-2][0-9]:[0-5][0-9]" required="true">
+            <button id="hiddenButtonSend{{ value["time"] }}" style="display: none;">send</button>
           </form>
         </div>
       </li>

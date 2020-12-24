@@ -71,38 +71,36 @@ def api_workday(date):
           required: true
     """
     values = query_db("SELECT * FROM dates WHERE date=?", (date,))
-    idx = len(values)
     if request.method == "GET":
         return jsonify(values)
     elif request.method == "POST":
         time = request.form["time"]
-        insert_db("INSERT INTO dates (date, idx, time) VALUES (?, ?, ?)", (date, idx, time))
+        insert_db("INSERT INTO dates (date, time) VALUES (?, ?)", (date, time))
         return jsonify(query_db("SELECT * FROM dates WHERE date=?", (date,)))
     elif request.method == "DELETE":
-        id = request.form["id"]
-        insert_db("DELETE FROM dates WHERE id=?", (id,))
+        time = request.form["time"]
+        insert_db("DELETE FROM dates WHERE date=? AND time=?", (date, time))
         return jsonify(query_db("SELECT * FROM dates WHERE date=?", (date,)))
     elif request.method == "PUT":
-        id = request.form["id"]
-        time = request.form["time"]
-        insert_db("UPDATE dates SET time=? WHERE id=?", (time,id,))
+        old_time = request.form["old_time"]
+        new_time = request.form["new_time"]
+        insert_db("UPDATE dates SET time=? WHERE date=? AND time=?", (new_time, date, old_time))
         return jsonify(query_db("SELECT * FROM dates WHERE date=?", (date,)))
 
 def client_workday(date):
     values = query_db("SELECT * FROM dates WHERE date=?", (date,))
-    idx = len(values)
     if request.method == "POST" and "delete" in request.path:
-        id = request.form["id"]
-        insert_db("DELETE FROM dates WHERE id=?", (id,))
+        time = request.form["time"]
+        insert_db("DELETE FROM dates WHERE date=? AND time=?", (date, time))
         return redirect(url_for("workday", date=date))
     elif request.method == "POST" and "put" in request.path:
-        id = request.form["id"]
-        time = request.form["time"]
-        insert_db("UPDATE dates SET time=? WHERE id=?", (time,id,))
+        old_time = request.form["old_time"]
+        new_time = request.form["new_time"]
+        insert_db("UPDATE dates SET time=? WHERE date=? AND time=?", (new_time, date, old_time))
         return redirect(url_for("workday", date=date))
     elif request.method == "POST":
         time = request.form["time"]
-        insert_db("INSERT INTO dates (date, idx, time) VALUES (?, ?, ?)", (date, idx, time))
+        insert_db("INSERT INTO dates (date, time) VALUES (?, ?)", (date, time))
         return redirect(url_for("workday", date=date))
 
 def import_data():
@@ -121,7 +119,7 @@ def import_data():
               line_split = line.decode().split()
               date = line_split[0]
               time = line_split[1].split(";")[0]
-              insert_db("INSERT INTO dates (date, idx, time) VALUES (?, ?, ?)", (date, 0, time))
+              insert_db("INSERT INTO dates (date, time) VALUES (?, ?)", (date, time))
           values["Imported"] = f"{len(lines[i+1:])} entries"
           values["Last entry"] = f"was date {date} at time {time}"
           success = "successful"
